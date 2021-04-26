@@ -351,7 +351,18 @@ void Yolo3DetectorNode::Run()
         generateColors(colors_, 80);
     #endif
 
-    publisher_objects_ = node_handle_.advertise<autoware_msgs::DetectedObjectArray>("/detection/image_detector/objects", 1);
+    std::string objects_topic_str;
+    if (private_node_handle.getParam("objects_node", objects_topic_str))
+    {
+        ROS_INFO("Setting objects node to %s", objects_topic_str.c_str());
+    }
+    else
+    {
+        ROS_INFO("No objects node received, defaulting to /detection/image_detector/objects");
+        objects_topic_str = "/detection/image_detector/objects";
+    }
+
+    publisher_objects_ = node_handle_.advertise<autoware_msgs::DetectedObjectArray>(objects_topic_str, 1);
 
     ROS_INFO("Subscribing to... %s", image_raw_topic_str.c_str());
     subscriber_image_raw_ = node_handle_.subscribe(image_raw_topic_str, 1, &Yolo3DetectorNode::image_callback, this);
