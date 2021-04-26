@@ -25,7 +25,7 @@
         output="screen">
     <param name="image_src" value="$(arg_camera_id)$(arg image_src)"/>
     <param name="image_out" value="$(arg_camera_id)/image_rects"/>
-    <param name="object_src" value="/detection/image_detector${arg camera_id}/objects"/> <!-- this is fixed by definition -->
+    <param name="object_src" value="/detection/image_detector$(arg camera_id)/objects"/> <!-- this is fixed by definition -->
   </node>
 
 
