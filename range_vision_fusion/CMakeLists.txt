@@ -90,8 +90,40 @@ target_link_libraries(range_vision_fusion
   range_vision_fusion_lib
 )
 
+#Assembler Library
+add_library(fusion_assembler_lib SHARED
+  include/range_vision_fusion/fusion_assembler.h
+  src/fusion_assembler.cpp
+)
+
+target_include_directories(fusion_assembler_lib PRIVATE
+  include
+  ${catkin_INCLUDE_DIRS}
+)
+
+target_link_libraries(fusion_assembler_lib
+  ${catkin_LIBRARIES}
+)
+
+
+
+#Assembler node
+add_executable(fusion_assembler
+  src/fusion_assembler_node.cpp
+)
+target_include_directories(fusion_assembler PRIVATE
+  include
+  ${OpenCV_INCLUDE_DIR}
+  ${catkin_INCLUDE_DIRS}
+  ${Boost_INCLUDE_DIRS}
+)
+
+target_link_libraries(fusion_assembler
+  fusion_assembler_lib
+)
+
 install(
-  TARGETS range_vision_fusion range_vision_fusion_lib
+  TARGETS range_vision_fusion range_vision_fusion_lib fusion_assembler fusion_assembler_lib
   ARCHIVE DESTINATION ${CATKIN_PACKAGE_LIB_DESTINATION}
   LIBRARY DESTINATION ${CATKIN_PACKAGE_LIB_DESTINATION}
   RUNTIME DESTINATION ${CATKIN_PACKAGE_BIN_DESTINATION}
